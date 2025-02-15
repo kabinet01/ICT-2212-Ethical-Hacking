@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  python-webserver:
+    build:
+      context: ./web_server
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      host:
+        ipv4_address: 172.18.0.10
+
+  ftp-ssh-server:
+    build:
+      context: ./backup_server
+      dockerfile: Dockerfile
+    networks:
+      host:
+        ipv4_address: 172.18.0.11
+networks:
+  host:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24 

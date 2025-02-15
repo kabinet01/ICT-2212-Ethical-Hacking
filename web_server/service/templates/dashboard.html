@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Our Amazing App{% endblock %}
+{% block content %}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Welcome, {{ current_user.username }}!</h2>
+    </div>
+
+    <div class="dashboard-section">
+        <h3>Random Fact of the Day</h3>
+
+        {% if fact %}
+            <div class="fact-content">{{ fact }}</div>
+        {% else %}
+            <p>No fact available at the moment. Check back later!</p>
+        {% endif %}
+
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <div class="button-group">
+            <button id="new-fact-btn" class="btn btn-primary">Get New Fact</button>
+            <a href="{{ url_for('download_fact', id=fact_id) }}" id="download-fact-btn" class="btn btn-secondary">Download Fact</a>
+        </div>
+    </div>
+
+    <div class="dashboard-section">
+        <h3>Your Stats</h3>
+        <ul class="stats-list">
+            <li><span class="stat-label">Days active:</span> <span class="stat-value">{{ days_active }}</span></li>
+            <li><span class="stat-label">Facts learned:</span> <span class="stat-value">{{ facts_learned }}</span></li>
+        </ul>
+    </div>
+
+    <div class="dashboard-section">
+        <h3>Upload New Facts (Admins only!)</h3>
+        {% if current_user.role == 'admin' %}
+        <form action="{{ url_for('upload_facts') }}" method="post" enctype="multipart/form-data">
+            <div class="input-group">
+                <input type="file" name="facts_file" accept=".pkl" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="api_key" placeholder="Enter API Key" required>
+                <p class="api-key-hint">Hint: The API key is stored in /apikey.txt</p>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Facts</button>
+        </form>
+        
+        {% else %}
+        <form action="{{ url_for('upload_facts') }}" method="post" enctype="multipart/form-data">
+            <div class="input-group">
+                <input type="file" name="facts_file" accept=".pkl" required disabled>
+            </div>
+            <div class="input-group">
+                <input type="password" name="api_key" placeholder="Enter API Key" disabled required>
+                <p class="api-key-hint">Hint: The API key is stored in /apikey.txt</p>
+            </div>
+            <button type="submit" class="btn btn-primary" disabled>Upload Facts</button>
+        </form>
+
+        {% endif %}
+    </div>
+
+    {% if newly_uploaded_facts %}
+    <div class="dashboard-section">
+        <h3>Newly Uploaded Facts</h3>
+        <ul class="facts-list">
+            {% for fact in newly_uploaded_facts %}
+                <li>{{ fact }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('new-fact-btn').addEventListener('click', function() {
+        fetch('/get_new_fact')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.fact-content').textContent = data.fact;
+                document.getElementById('download-fact-btn').href = '/download_fact?id=' + data.fact_id;
+            });
+    });
+</script>
+{% endblock %}

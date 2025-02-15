@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block title %}Welcome to Our App{% endblock %} {%
+block content %}
+
+<main class="landing-container">
+  <section class="hero">
+    <h1>A Wikipedia for facts</h1>
+    <p>Potentially useless or interesting facts you probably don't know!</p>
+    <div class="cta-buttons">
+      <a href="{{ url_for('register') }}" class="btn btn-primary"
+        >Get Started</a
+      >
+      <a href="#features" class="btn btn-secondary">Learn More</a>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <h2>Key Features</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <i class="feature-icon">🚀</i>
+        <h3>Boost Productivity</h3>
+        <p>Streamline your workflow and get more done in less time.</p>
+      </div>
+      <div class="feature">
+        <i class="feature-icon">🔒</i>
+        <h3>Secure & Reliable</h3>
+        <p>Your data is safe with our state-of-the-art security measures.</p>
+      </div>
+      <div class="feature">
+        <i class="feature-icon">📊</i>
+        <h3>Insightful Analytics</h3>
+        <p>Gain valuable insights with our powerful analytics tools.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>
+      We're passionate about creating tools that make your life easier and more
+      productive. Our team of experts is dedicated to delivering the best
+      possible user experience.
+    </p>
+  </section>
+</main>
+{% endblock %}

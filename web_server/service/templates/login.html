@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Login - Our Amazing App{% endblock %}
+{% block content %}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Login to Your Account</h2>
+        <form method="POST">
+            <div class="input-group">
+                <input type="email" id="email" name="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="auth-links">
+            Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
